@@ -26,6 +26,7 @@
 #include "LHEP.hh"
 #include "G4PhysListFactory.hh"
 #include "G4RunManager.hh"
+#include "G4OpticalPhysics.hh"
 
 #include "G4UnitsTable.hh"
 
@@ -98,7 +99,8 @@ int main(int argc, char** argv){
     // Physics we want to use
     G4int verbose = 0;
     G4PhysListFactory factory;
-    G4VModularPhysicsList* physlist = factory.GetReferencePhysList("LHEP");
+    G4VModularPhysicsList* physlist = factory.GetReferencePhysList("FTFP_BERT");
+    physlist->RegisterPhysics(new G4OpticalPhysics());
     physlist->SetVerboseLevel(verbose);
     runManager->SetUserInitialization(physlist);
 

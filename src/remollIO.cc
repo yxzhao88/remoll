@@ -25,11 +25,17 @@
 
 remollIO::remollIO(){
     fTree = NULL;
-    InitializeTree();
+    fFile = NULL;
+    
     // Default filename
     strcpy(fFilename, "remollout.root");
 
-    fFile = NULL;
+    //  Set arrays to 0
+    fNGenDetHit = 0;
+    fNGenDetSum = 0;
+    fCollCut = 1; // default
+
+    InitializeTree();
 }
 
 remollIO::~remollIO(){
@@ -52,7 +58,7 @@ void remollIO::InitializeTree(){
 
     fFile = new TFile(fFilename, "RECREATE");
 
-    if( fTree ){ delete fTree; }
+    //if( fTree ){ delete fTree; }
 
     fTree = new TTree("T", "Geant4 Moller Simulation");
 
@@ -66,7 +72,7 @@ void remollIO::InitializeTree(){
     fTree->Branch("ev.thcom", &fEvThCoM,  "ev.thcom/D");
     fTree->Branch("ev.beamp",  &fEvBeamP,   "ev.beamp/D");
 
-    fTree->Branch("ev.npart", &fNEvPart   ,     "ev.npart/I");
+    fTree->Branch("ev.npart", &fNEvPart,    "ev.npart/I");
     fTree->Branch("ev.pid",   &fEvPID,      "ev.pid[ev.npart]/I");
     fTree->Branch("ev.vx",    &fEvPart_X,   "ev.vx[ev.npart]/D");
     fTree->Branch("ev.vy",    &fEvPart_Y,   "ev.vy[ev.npart]/D");
@@ -142,6 +148,7 @@ void remollIO::Flush(){
     fNGenDetHit = 0;
     fNGenDetSum = 0;
     fCollCut = 1; // default
+    G4cerr << "I'm being called" << G4endl;
 }
 
 void remollIO::WriteTree(){
@@ -239,8 +246,9 @@ void remollIO::SetEventData(remollEvent *ev){
 
 void remollIO::AddGenericDetectorHit(remollGenericDetectorHit *hit){
     int n = fNGenDetHit;
-    if( n > __IO_MAXHIT ){
-	G4cerr << "WARNING: " << __PRETTY_FUNCTION__ << " line " << __LINE__ << ":  Buffer size exceeded!" << G4endl;
+    if( n >= __IO_MAXHIT ){
+	G4cerr << "WARNING: " << __PRETTY_FUNCTION__ << " line " << __LINE__ << ":  Buffer size exceeded for hit " << n << " !" << G4endl;
+	fNGenDetHit = __IO_MAXHIT;
 	return;
     }
 
@@ -283,8 +291,9 @@ void remollIO::AddGenericDetectorHit(remollGenericDetectorHit *hit){
 
 void remollIO::AddGenericDetectorSum(remollGenericDetectorSum *hit){
     int n = fNGenDetSum;
-    if( n > __IO_MAXHIT ){
-	G4cerr << "WARNING: " << __PRETTY_FUNCTION__ << " line " << __LINE__ << ":  Buffer size exceeded!" << G4endl;
+    if( n >= __IO_MAXHIT ){
+	G4cerr << "WARNING: " << __PRETTY_FUNCTION__ << " line " << __LINE__ << ":  Buffer size exceeded for hit " << n << " !" << G4endl;
+	fNGenDetSum = __IO_MAXHIT;
 	return;
     }
 

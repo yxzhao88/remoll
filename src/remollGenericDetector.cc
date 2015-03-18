@@ -41,7 +41,7 @@ G4bool remollGenericDetector::ProcessHits( G4Step *step, G4TouchableHistory *){
     G4TouchableHistory *hist = 
 	(G4TouchableHistory*)(step->GetPreStepPoint()->GetTouchable());
     //G4int  copyID = hist->GetVolume(1)->GetCopyNo();//return the copy id of the parent volume
-    G4int  copyID = hist->GetVolume()->GetCopyNo();//return the copy id of the logical volume
+    G4int  copyID = hist->GetVolume(2)->GetCopyNo();//return the copy id of the logical volume
 
     G4StepPoint *prestep = step->GetPreStepPoint();
     G4Track     *track   = step->GetTrack();
