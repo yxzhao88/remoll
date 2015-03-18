@@ -58,6 +58,7 @@ void remollIO::InitializeTree(){
 
     fFile = new TFile(fFilename, "RECREATE");
 
+	//fFile already closed, no need to delete fTree (this makes valgrind happy :D)
     //if( fTree ){ delete fTree; }
 
     fTree = new TTree("T", "Geant4 Moller Simulation");
@@ -148,7 +149,6 @@ void remollIO::Flush(){
     fNGenDetHit = 0;
     fNGenDetSum = 0;
     fCollCut = 1; // default
-    G4cerr << "I'm being called" << G4endl;
 }
 
 void remollIO::WriteTree(){
