@@ -1,6 +1,8 @@
 #include "remollGenpElastic.hh"
 
 #include "CLHEP/Random/RandFlat.h"
+#include "CLHEP/Units/PhysicalConstants.h"
+#include "CLHEP/Units/SystemOfUnits.h"
 
 #include "remollEvent.hh"
 #include "remollVertex.hh"
@@ -20,10 +22,10 @@
 #define NINTERVAL 3
 
 remollGenpElastic::remollGenpElastic(){
-    fTh_min =     0.1*deg;
-    fTh_max =     2.0*deg;
+    fTh_min =     0.1*CLHEP::deg;
+    fTh_max =     2.0*CLHEP::deg;
 
-    fE_min = 80.0*MeV; // Absolute minimum of electron energy
+    fE_min = 80.0*CLHEP::MeV; // Absolute minimum of electron energy
                             // to generate
 
     fApplyMultScatt = true;
@@ -40,7 +42,7 @@ void remollGenpElastic::SamplePhysics(remollVertex *vert, remollEvent *evt){
 
     // Get initial beam energy instead of using other sampling
     double beamE = fBeamTarg->fBeamE;
-    double Ekin  = beamE - electron_mass_c2;
+    double Ekin  = beamE - CLHEP::electron_mass_c2;
 
     std::vector <G4VPhysicalVolume *> targVols = fBeamTarg->GetTargVols();
 
@@ -62,10 +64,10 @@ void remollGenpElastic::SamplePhysics(remollVertex *vert, remollEvent *evt){
     double bremcut = fBeamTarg->fEcut;
 
     // Approximation for Q2, just needs to be order of magnitude
-    double effQ2 = 2.0*beamE*beamE*(1.0-cos(0.5*deg));
+    double effQ2 = 2.0*beamE*beamE*(1.0-cos(0.5*CLHEP::deg));
 
     // About ~1.5%
-    double int_bt = 0.75*(alpha/pi)*( log( effQ2/(electron_mass_c2*electron_mass_c2) ) - 1.0 );
+    double int_bt = 0.75*(alpha/CLHEP::pi)*( log( effQ2/(CLHEP::electron_mass_c2*CLHEP::electron_mass_c2) ) - 1.0 );
 
     double bt;
     if( !bypass_target ){
@@ -79,19 +81,19 @@ void remollGenpElastic::SamplePhysics(remollVertex *vert, remollEvent *evt){
     value = 1.0;
     prob = 1.- pow(bremcut/Ekin,bt) - bt/(bt+1.)*(1.- pow(bremcut/Ekin,bt+1.))
 	+ 0.75*bt/(2.+bt)*(1.- pow(bremcut/Ekin,bt+2.));
-    prob = prob/(1.- bt*Euler + bt*bt/2.*(Euler*Euler+pi*pi/6.)); /* Gamma function */
+    prob = prob/(1.- bt*Euler + bt*bt/2.*(Euler*Euler+CLHEP::pi*CLHEP::pi/6.)); /* Gamma function */
     prob_sample = G4UniformRand();        /* Random sampling */
 
     double Evlo[NINTERVAL] = {
 	bremcut,
-	(beamE-bremcut)*2.0*GeV/(11.0*GeV-bremcut),
-	(beamE-bremcut)*9.0*GeV/(11.0*GeV-bremcut),
+	(beamE-bremcut)*2.0*CLHEP::GeV/(11.0*CLHEP::GeV-bremcut),
+	(beamE-bremcut)*9.0*CLHEP::GeV/(11.0*CLHEP::GeV-bremcut),
     };
 
     double Evhi[NINTERVAL] = {
-	(beamE-bremcut)*2.0*GeV/(11.0*GeV-bremcut),
-	(beamE-bremcut)*9.0*GeV/(11.0*GeV-bremcut),
-	(beamE-bremcut)*(11.0*GeV-fE_min)/(11.0*GeV-bremcut),
+	(beamE-bremcut)*2.0*CLHEP::GeV/(11.0*CLHEP::GeV-bremcut),
+	(beamE-bremcut)*9.0*CLHEP::GeV/(11.0*CLHEP::GeV-bremcut),
+	(beamE-bremcut)*(11.0*CLHEP::GeV-fE_min)/(11.0*CLHEP::GeV-bremcut),
     };
 
     assert( Evhi[NINTERVAL-1]-Evlo[NINTERVAL-1] > 0.0 );
@@ -173,7 +175,7 @@ void remollGenpElastic::SamplePhysics(remollVertex *vert, remollEvent *evt){
 	beamE -= eloss;
     }
 
-    if( beamE < electron_mass_c2 ){ 
+    if( beamE < CLHEP::electron_mass_c2 ){ 
 	evt->SetEffCrossSection(0.0);
 	evt->SetAsymmetry(0.0);
 	return; 
@@ -181,7 +183,7 @@ void remollGenpElastic::SamplePhysics(remollVertex *vert, remollEvent *evt){
 
     // Set event information to our new sampling
     evt->fBeamE = beamE;
-    evt->fBeamMomentum = evt->fBeamMomentum.unit()*sqrt(beamE*beamE - electron_mass_c2*electron_mass_c2);;
+    evt->fBeamMomentum = evt->fBeamMomentum.unit()*sqrt(beamE*beamE - CLHEP::electron_mass_c2*CLHEP::electron_mass_c2);;
 
     ////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -204,27 +206,27 @@ void remollGenpElastic::SamplePhysics(remollVertex *vert, remollEvent *evt){
     // sampling
     double samp_fact = sampv*sampv*(icth_a-icth_b)/(cthmin-cthmax);
 
-    double ph = CLHEP::RandFlat::shoot(0.0, 2.0*pi);
+    double ph = CLHEP::RandFlat::shoot(0.0, 2.0*CLHEP::pi);
 
-    double ef    = proton_mass_c2*beamE/(proton_mass_c2 + beamE*(1.0-cos(th)));;
+    double ef    = CLHEP::proton_mass_c2*beamE/(CLHEP::proton_mass_c2 + beamE*(1.0-cos(th)));;
 
     double q2  = 2.0*beamE*ef*(1.0-cos(th));
-    double tau = q2/(4.0*proton_mass_c2*proton_mass_c2);
+    double tau = q2/(4.0*CLHEP::proton_mass_c2*CLHEP::proton_mass_c2);
 
-    double gd = pow( 1.0 + q2/(0.71*GeV*GeV), -2.0 );
+    double gd = pow( 1.0 + q2/(0.71*CLHEP::GeV*CLHEP::GeV), -2.0 );
     double gep = gd;
     double gmp = 2.79*gd;
 
     double gen =  1.91*gd*tau/(1.0+5.6*tau); // galster
     double gmn = -1.91*gd;
 
-    double sigma_mott = hbarc*hbarc*pow(alpha*cos(th/2.0), 2.0)/pow(2.0*beamE*sin(th/2.0)*sin(th/2.0), 2.0);
+    double sigma_mott = CLHEP::hbarc*CLHEP::hbarc*pow(alpha*cos(th/2.0), 2.0)/pow(2.0*beamE*sin(th/2.0)*sin(th/2.0), 2.0);
     double ffpart1 = (gep*gep + tau*gmp*gmp)/(1.0+tau);
     double ffpart2 = 2.0*tau*gmp*gmp*tan(th/2.0)*tan(th/2.0);
 
     double sigma = sigma_mott*(ef/beamE)*(ffpart1 + ffpart2);
 
-    double V = 2.0*pi*(cthmin - cthmax)*samp_fact;
+    double V = 2.0*CLHEP::pi*(cthmin - cthmax)*samp_fact;
 
     // Suppress too low angles from being generated
     // If we're in the multiple-scattering regime
@@ -251,7 +253,7 @@ void remollGenpElastic::SamplePhysics(remollVertex *vert, remollEvent *evt){
 	exit(1);
     }
 
-    G4double APV_base = -GF*q2/(4.0*sqrt(2.0)*pi*alpha);
+    G4double APV_base = -GF*q2/(4.0*sqrt(2.0)*CLHEP::pi*alpha);
 
     G4double eps = pow(1.0 + 2.0*(1.0+tau)*tan(th/2.0)*tan(th/2.0), -1.0);
 
@@ -263,18 +265,18 @@ void remollGenpElastic::SamplePhysics(remollVertex *vert, remollEvent *evt){
     evt->SetAsymmetry(APV);
 
     evt->SetQ2( q2 );
-    evt->SetW2( proton_mass_c2*proton_mass_c2 );
+    evt->SetW2( CLHEP::proton_mass_c2*CLHEP::proton_mass_c2 );
 
     // REradiate////////////////////////////////////////////////////////////////////////////
     // We're going to use the new kinematics for this guy
 
-    int_bt = (alpha/pi)*( log( q2/(electron_mass_c2*electron_mass_c2) ) - 1.0 );
-    Ekin = ef - electron_mass_c2;;
+    int_bt = (alpha/CLHEP::pi)*( log( q2/(CLHEP::electron_mass_c2*CLHEP::electron_mass_c2) ) - 1.0 );
+    Ekin = ef - CLHEP::electron_mass_c2;;
     double env, ref;
 
     prob = 1.- pow(bremcut/Ekin, int_bt) - int_bt/(int_bt+1.)*(1.- pow(bremcut/Ekin,int_bt+1.))
 	+ 0.75*int_bt/(2.+int_bt)*(1.- pow(bremcut/Ekin,int_bt+2.));
-    prob = prob/(1.- int_bt*Euler + int_bt*int_bt/2.*(Euler*Euler+pi*pi/6.)); /* Gamma function */
+    prob = prob/(1.- int_bt*Euler + int_bt*int_bt/2.*(Euler*Euler+CLHEP::pi*CLHEP::pi/6.)); /* Gamma function */
     prob_sample = G4UniformRand();        /* Random sampling */
 
     if (prob_sample <= prob) {//Bremsstrahlung has taken place!
@@ -288,8 +290,8 @@ void remollGenpElastic::SamplePhysics(remollVertex *vert, remollEvent *evt){
 	    ref = value/env;
 	} while (sample > ref);
 
-	ef = Ekin-eloss+electron_mass_c2;
-	assert( ef > electron_mass_c2 );
+	ef = Ekin-eloss+CLHEP::electron_mass_c2;
+	assert( ef > CLHEP::electron_mass_c2 );
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////
@@ -303,13 +305,13 @@ void remollGenpElastic::SamplePhysics(remollVertex *vert, remollEvent *evt){
 }
 
 G4double remollGenpElastic::RadProfile(G4double eloss, G4double btt){
-     double Ekin = fBeamTarg->fBeamE - electron_mass_c2;
+     double Ekin = fBeamTarg->fBeamE - CLHEP::electron_mass_c2;
      double retval = 1./eloss*(1.-eloss/Ekin+0.75*pow(eloss/Ekin,2))*pow(eloss/Ekin,btt);
 
      if( std::isnan(retval) || std::isinf(retval) ){
 	 G4cerr << __FILE__ << " line " << __LINE__ << ": ERROR" << G4endl;
-	 G4cerr << "Ekin " << Ekin/GeV << " GeV   btt = " << btt << " retval = " << retval << G4endl;
-	 fprintf(stderr, "eloss = %e GeV\n", eloss/GeV);
+	 G4cerr << "Ekin " << Ekin/CLHEP::GeV << " GeV   btt = " << btt << " retval = " << retval << G4endl;
+	 fprintf(stderr, "eloss = %e GeV\n", eloss/CLHEP::GeV);
      }
 
      assert( !std::isnan(retval) && !std::isinf(retval) );

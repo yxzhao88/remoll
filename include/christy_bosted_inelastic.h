@@ -18,6 +18,7 @@
  */
 
 #include "G4PhysicalConstants.hh"
+#include "CLHEP/Units/SystemOfUnits.h"
 
 #include <math.h>
 
@@ -83,7 +84,7 @@ double Gamma_p( int i, int j, double W2 ){
     }
     */
 
-    double Mp = proton_mass_c2/GeV;
+    double Mp = CLHEP::proton_mass_c2/CLHEP::GeV;
     double M[7] = {1.230, 1.530, 1.506, 1.698, 1.665, 1.433, 1.934};
     double Gamma[7] = {0.136, 0.220, 0.083, 0.096, 0.109, 0.379, 0.380};
     double l[7] = {1.0, 0.0, 2.0, 3.0, 0.0, 1.0, 3.0};
@@ -172,7 +173,7 @@ double BW_p( int i, double W2 ){
     }
 
     int j;
-    double Mp = proton_mass_c2/GeV;
+    double Mp = CLHEP::proton_mass_c2/CLHEP::GeV;
     double M[7] = {1.230, 1.530, 1.506, 1.698, 1.665, 1.433, 1.934};
     double Gamma[7] = {0.136, 0.220, 0.083, 0.096, 0.109, 0.379, 0.380};
     double beta[7][3] = {
@@ -215,7 +216,7 @@ double BW_d( int i, double W2 ){
     }
 
     int j;
-    double Mp = proton_mass_c2/GeV;
+    double Mp = CLHEP::proton_mass_c2/CLHEP::GeV;
     double M[7] = {1.230, 1.530, 1.506, 1.698, 1.665, 1.433, 1.934};
     double Gamma[7] = {0.136, 0.220, 0.083, 0.096, 0.109, 0.379, 0.380};
     double beta[7][3] = {
@@ -301,7 +302,7 @@ double sigmaR_T_d( double W2, double Q2 ){
 double sigmaNR_T_p( double W2, double Q2 ){
     // Non resonant transverse term
     int i;
-    double Mp = proton_mass_c2/GeV;
+    double Mp = CLHEP::proton_mass_c2/CLHEP::GeV;
     double mpi = 0.135;
     double Q02 = 0.05;
     double xp = 1.0/( 1 + (W2 - pow(Mp+mpi,2.0))/(Q2 + Q02) );
@@ -361,7 +362,7 @@ double sigmaNR_T_d( double W2, double Q2 ){
 
 double sigmaNR_L_p( double W2, double Q2 ){
     // Non resonant transverse term
-    double Mp = proton_mass_c2/GeV;
+    double Mp = CLHEP::proton_mass_c2/CLHEP::GeV;
     double m0 = 4.2802;
     double mpi = 0.140;
     double Q02 = 0.125;
@@ -391,7 +392,7 @@ double sigmaNR_L_p( double W2, double Q2 ){
 }
 
 double sigma_p( double E, double th, double Ep ){
-    double Mp = proton_mass_c2/GeV;
+    double Mp = CLHEP::proton_mass_c2/CLHEP::GeV;
     double alpha = 1.0/137.0;
     double nu = E-Ep;
 
@@ -442,7 +443,7 @@ double Rp( double E, double th, double Ep ){
 }
 
 double sigma_d( double E, double th, double Ep ){
-    double Mp = proton_mass_c2/GeV;
+    double Mp = CLHEP::proton_mass_c2/CLHEP::GeV;
     double alpha = 1.0/137.0;
     double nu = E-Ep;
 

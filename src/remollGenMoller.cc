@@ -1,6 +1,7 @@
 #include "remollGenMoller.hh"
 
 #include "CLHEP/Random/RandFlat.h"
+#include "CLHEP/Units/PhysicalConstants.h"
 
 #include "remollEvent.hh"
 #include "remollVertex.hh"
@@ -22,18 +23,18 @@ void remollGenMoller::SamplePhysics(remollVertex *vert, remollEvent *evt){
     // Generate Moller event
 
     double beamE = vert->GetBeamE();
-    double me    = electron_mass_c2;
+    double me    = CLHEP::electron_mass_c2;
 
     double beta_com  = sqrt( (beamE - me)/(beamE + me) );
     double gamma_com = 1.0/sqrt(1.0 - beta_com*beta_com);
 
     double e_com = me*gamma_com;
     double thcom = acos(CLHEP::RandFlat::shoot(cos(fThCoM_max), cos(fThCoM_min)));
-    double phcom = CLHEP::RandFlat::shoot(0.0, 2.0*pi);
+    double phcom = CLHEP::RandFlat::shoot(0.0, 2.0*CLHEP::pi);
 
-    double sigma = alpha*alpha*pow(3.0+cos(thcom)*cos(thcom),2.0)*hbarc*hbarc/pow(sin(thcom),4.0)/(2.0*me*beamE); // units of area
+    double sigma = alpha*alpha*pow(3.0+cos(thcom)*cos(thcom),2.0)*CLHEP::hbarc*CLHEP::hbarc/pow(sin(thcom),4.0)/(2.0*me*beamE); // units of area
 
-    double V = 2.0*pi*(cos(fThCoM_min) - cos(fThCoM_max));
+    double V = 2.0*CLHEP::pi*(cos(fThCoM_min) - cos(fThCoM_max));
 
     //  Multiply by Z because we have Z electrons
     //  here we must also divide by two because we are double covering 
@@ -47,7 +48,7 @@ void remollGenMoller::SamplePhysics(remollVertex *vert, remollEvent *evt){
 	exit(1);
     }
 
-    G4double APV = electron_mass_c2*beamE*GF*4.0*sin(thcom)*sin(thcom)*(QWe+QWe_rad)/(sqrt(2.0)*pi*alpha*pow(3.0+cos(thcom)*cos(thcom),2.0));
+    G4double APV = CLHEP::electron_mass_c2*beamE*GF*4.0*sin(thcom)*sin(thcom)*(QWe+QWe_rad)/(sqrt(2.0)*CLHEP::pi*alpha*pow(3.0+cos(thcom)*cos(thcom),2.0));
 
     evt->SetAsymmetry(APV);
     evt->SetThCoM(thcom);

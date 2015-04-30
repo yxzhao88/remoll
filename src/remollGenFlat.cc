@@ -1,6 +1,7 @@
 #include "remollGenFlat.hh"
 
 #include "CLHEP/Random/RandFlat.h"
+#include "CLHEP/Units/PhysicalConstants.h"
 
 #include "remollEvent.hh"
 #include "remollVertex.hh"
@@ -26,7 +27,7 @@ void remollGenFlat::SamplePhysics(remollVertex *vert, remollEvent *evt){
     double mp = 0.938*GeV;
 
     double th = acos(CLHEP::RandFlat::shoot(cos(fTh_max), cos(fTh_min)));
-    double ph = CLHEP::RandFlat::shoot(0.0, 2.0*pi);
+    double ph = CLHEP::RandFlat::shoot(0.0, 2.0*CLHEP::pi);
     double ef = CLHEP::RandFlat::shoot(fE_min, fE_max);
 
     evt->SetEffCrossSection(1);

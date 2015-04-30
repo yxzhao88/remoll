@@ -1,6 +1,8 @@
 #include "remollEvent.hh"
 #include <math.h>
 
+#include "CLHEP/Units/SystemOfUnits.h"
+
 #include "G4ParticleTable.hh"
 
 remollEvent::remollEvent(){
@@ -33,14 +35,14 @@ void remollEvent::Reset(){
     fBeamMomentum = G4ThreeVector(-1e9, -1e9, -1e9);
     fVertexPos    = G4ThreeVector(-1e9, -1e9, -1e9);
 
-    fRate  = 0.0/s;
-    fEffXs = -1e9*nanobarn;
+    fRate  = 0.0/CLHEP::s;
+    fEffXs = -1e9*CLHEP::nanobarn;
     fAsym  = -1e9;
 
-    fQ2    = -1e9*GeV*GeV;
+    fQ2    = -1e9*CLHEP::GeV*CLHEP::GeV;
 
     // Only care about for certain processes
-    fW2    = -1e9*GeV*GeV;
+    fW2    = -1e9*CLHEP::GeV*CLHEP::GeV;
     fThCoM = -1e9;
 }
 
@@ -85,11 +87,11 @@ G4bool remollEvent::EventIsSane(){
 
 void remollEvent::Print(){
     G4cout << "Event " << this << " dump" << G4endl;
-    G4cout << "\t" << fEffXs/nanobarn << " nb effective cross section " << G4endl;
+    G4cout << "\t" << fEffXs/CLHEP::nanobarn << " nb effective cross section " << G4endl;
     G4cout << "\t" << fAsym*1e6 << " ppm asymmetry" << G4endl;
-    G4cout << "\t" << "Q2 = " << fQ2/GeV/GeV << " GeV2" << G4endl;
-    G4cout << "\t" << "W2 = " << fW2/GeV/GeV << " GeV2" << G4endl;
-    G4cout << "\t" << "th_com = " << fThCoM/deg << " deg" << G4endl;
+    G4cout << "\t" << "Q2 = " << fQ2/CLHEP::GeV/CLHEP::GeV << " GeV2" << G4endl;
+    G4cout << "\t" << "W2 = " << fW2/CLHEP::GeV/CLHEP::GeV << " GeV2" << G4endl;
+    G4cout << "\t" << "th_com = " << fThCoM/CLHEP::deg << " deg" << G4endl;
 
     G4cout << "\t" << fPartPos.size() << " particles generated" << G4endl;
 
@@ -100,8 +102,8 @@ void remollEvent::Print(){
 	    G4cout << "\tParticle type for " << i << " not defined" << G4endl;
 	} else {
 	    G4cout << "\t" << fPartType[i]->GetParticleName() << ":" << G4endl;
-	    G4cout << "\t\tat (" << fPartPos[i].x()/m << ", " << fPartPos[i].y()/m << ", " << fPartPos[i].z()/m  << ") m" << G4endl;
-	    G4cout << "\t\tof (" << fPartMom[i].x()/GeV << ", " << fPartMom[i].y()/GeV << ", " << fPartMom[i].z()/GeV  << ") GeV" << G4endl;
+	    G4cout << "\t\tat (" << fPartPos[i].x()/CLHEP::m << ", " << fPartPos[i].y()/CLHEP::m << ", " << fPartPos[i].z()/CLHEP::m  << ") m" << G4endl;
+	    G4cout << "\t\tof (" << fPartMom[i].x()/CLHEP::GeV << ", " << fPartMom[i].y()/CLHEP::GeV << ", " << fPartMom[i].z()/CLHEP::GeV  << ") GeV" << G4endl;
 	}
     }
 }
