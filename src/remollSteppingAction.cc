@@ -26,7 +26,10 @@ void remollSteppingAction::UserSteppingAction(const G4Step *aStep) {
 	||  material->GetName()=="Copper" )
 	    && fEnableKryptonite
 	){
-	fTrack->SetTrackStatus(fKillTrackAndSecondaries);
+      // G4double edep = aStep->GetTotalEnergyDeposit();
+      // G4cout << "UserSteppingAction:: Executing KillTrackAndSecondaries ..; edep:: "<< edep<< "\t etot:: "<< fTrack->GetTotalEnergy() << G4endl;
+      fTrack->SetTrackStatus(fKillTrackAndSecondaries);
+
     }
 
 
