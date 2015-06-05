@@ -25,6 +25,16 @@
       4.95956*eV 0.25
       5.51063*eV 0.25
       5.90424*eV 0.25"/>
+    <matrix coldim="2" name="ABSLENGTH_CATHODE" values="
+      1.54986*eV 0.0000001*mm
+      1.77127*eV 0.0000001*mm
+      2.06648*eV 0.0000001*mm
+      2.47978*eV 0.0000001*mm
+      3.09973*eV 0.0000001*mm
+      4.13297*eV 0.0000001*mm
+      4.95956*eV 0.0000001*mm
+      5.51063*eV 0.0000001*mm
+      5.90424*eV 0.0000001*mm"/>
     <matrix coldim="2" name="EFFICIENCY_CATHODE" values="
       1.54986*eV 0.0080
       1.77127*eV 0.0298
@@ -36,11 +46,59 @@
       5.51063*eV 0.0890
       5.90424*eV 0.0355"/>
 
+  <!-- These are some good guesses to make the aluminium act like a reflector.
+    We assume that the aluminium is 91% reflective, 0.1% transmittive. That
+    means everything else should be absorbed. We don't care about the
+    correctness reflaction value, but it MUST be set, otherwise Geant4 will
+    kill the optical photon process.
+ -->
+  <matrix coldim="2" name="RINDEX_ALUMINIUM" values="
+      1.54986*eV 1.0
+      1.77127*eV 1.0
+      2.06648*eV 1.0
+      2.47978*eV 1.0
+      3.09973*eV 1.0
+      4.13297*eV 1.0
+      4.95956*eV 1.0
+      5.51063*eV 1.0
+      5.90424*eV 1.0"/>
+   <matrix coldim="2" name="REFLECTIVITY_ALUMINIUM" values="
+      1.54986*eV 0.91
+      1.77127*eV 0.91
+      2.06648*eV 0.91
+      2.47978*eV 0.91
+      3.09973*eV 0.91
+      4.13297*eV 0.91
+      4.95956*eV 0.91
+      5.51063*eV 0.91
+      5.90424*eV 0.91"/>
+   <matrix coldim="2" name="TRANSMITTANCE_ALUMINIUM" values="
+      1.54986*eV 0.001
+      1.77127*eV 0.001
+      2.06648*eV 0.001
+      2.47978*eV 0.001
+      3.09973*eV 0.001
+      4.13297*eV 0.001
+      4.95956*eV 0.001
+      5.51063*eV 0.001
+      5.90424*eV 0.001"/>
+  <matrix name="RINDEX_CATHODE" coldim="2"
+      values="1.8235*eV 2.9600 1.8647*eV 2.955 1.9077*eV 2.95 1.9528*eV 2.9500 2.000*eV 2.9600 2.0462*eV 2.9800 2.1017*eV 3.0100 2.1565*eV 3.0600 2.2143*eV 3.1200 2.2752*eV 3.2000 2.3396*eV 3.2600 2.4078*eV 3.0900 2.4800*eV 3.0000 2.5567*eV 3.0000 2.6383*eV 3.0000 2.7253*eV 2.8700 2.8182*eV 2.7000 2.9176*eV 2.6100 3.0244*eV 2.3800 3.1392*eV 2.1800 3.2632*eV 1.9200" />
+
     <matrix coldim="2" name="ABSLENGTH_QUARTZ" values="1.54986*eV 263160 1.77127*eV 250000 2.06648*eV 227270 2.47978*eV 200000 3.09973*eV 131580 4.13297*eV 16130 4.95956*eV 740 5.51063*eV 125 5.90424*eV 10"/>
     <matrix coldim="2" name="RINDEX_QUARTZ" values="1.54986*eV 1.45338 1.77127*eV 1.45536 2.06648*eV 1.4581 2.47978*eV 1.46239 3.09973*eV 1.47018 4.13297*eV  1.48786 4.95956*eV  1.50751 5.51063*eV 1.52422 5.90424*eV 1.53842"/>
 
     <matrix coldim="2" name="ABSLENGTH_AIR" values="1.54986*eV 1e+06 1.77127*eV 1e+06 2.06648*eV 1e+06 2.47978*eV 1e+06 3.09973*eV 1e+06 4.13297*eV 1e+06 4.95956*eV 1e+06 5.51063*eV 1e+06 5.90424*eV 1e+06"/>
-    <matrix coldim="2" name="RINDEX_AIR" values="1.54986*eV 1.000292 1.77127*eV 1 2.06648*eV 1.000292 2.47978*eV 1.000292 3.09973*eV 1.000292 4.13297*eV 1.000292 4.95956*eV 1.000292 5.51063*eV 1.000292 5.90424*eV 1.000292"/>
+    <matrix coldim="2" name="RINDEX_AIR" values="
+      1.54986*eV 1.000292
+      1.77127*eV 1.000000
+      2.06648*eV 1.000292
+      2.47978*eV 1.000292
+      3.09973*eV 1.000292
+      4.13297*eV 1.000292
+      4.95956*eV 1.000292
+      5.51063*eV 1.000292
+      5.90424*eV 1.000292"/>
 
     <matrix coldim="2" name="FASTCOMPONENT_AIR" values="1.54986*eV 0.1 1.77127*eV 0.1 2.06648*eV 0.1 2.47978*eV 0.1 3.09973*eV 0.1 4.13297*eV 0.1 4.95956*eV 0.1 5.51063*eV 0.1 5.90424*eV 0.1"/>
     <matrix coldim="2" name="SLOWCOMPONENT_AIR" values="1.54986*eV 0.1 1.77127*eV 0.1 2.06648*eV 0.1 2.47978*eV 0.1 3.09973*eV 0.1 4.13297*eV 0.1 4.95956*eV 0.1 5.51063*eV 0.1 5.90424*eV 0.1"/>    
@@ -188,6 +246,12 @@
       <atom unit="g/mole" value="14.01"/>
     </element>
     <material name="Air" state="gas">
+      <MEE unit="eV" value="85.7030667332999"/>
+      <D unit="g/cm3" value="0.00129"/>
+      <fraction n="0.7" ref="Nitrogen"/>
+      <fraction n="0.3" ref="Oxygen"/>
+    </material>
+    <material name="Air_Optical" state="gas">
       <property name="ABSLENGTH" ref="ABSLENGTH_AIR"/>
       <property name="RINDEX" ref="RINDEX_AIR"/>
       <property name="FASTCOMPONENT" ref="FASTCOMPONENT_AIR"/>
@@ -206,11 +270,16 @@
       <fraction n="0.3" ref="Oxygen"/>
     </material>
     <material Z="13" name="Aluminium" state="solid">
+      <property name="RINDEX" ref="RINDEX_ALUMINIUM"/>
+      <property name="REFLECTIVITY" ref="REFLECTIVITY_ALUMINIUM"/>
+      <property name="TRANSMITTANCE" ref="TRANSMITTANCE_ALUMINIUM"/>
       <MEE unit="eV" value="166"/>
       <D unit="g/cm3" value="2.7"/>
       <atom unit="g/mole" value="26.98"/>
     </material>
     <material Z="19" name="Photocathode" state="solid">
+      <property name="ABSLENGTH" ref="ABSLENGTH_CATHODE"/>
+      <property name="RINDEX" ref="RINDEX_CATHODE"/>
       <property name="REFLECTIVITY" ref="REFLECTIVITY_CATHODE"/>
       <property name="EFFICIENCY" ref="EFFICIENCY_CATHODE"/>
       <MEE unit="eV" value="190"/>
@@ -365,7 +434,7 @@
         <auxiliary auxtype="SensDet" auxvalue="planeDet"/>
       </volume>
       <volume name="ProbeContainerLogical[j]">
-        <materialref ref="Air"/>
+        <materialref ref="Air_Optical"/>
         <solidref ref="ProbeContainerSolid[j]"/>
         <physvol name="ProbeCoatPhysical[j]">
           <volumeref ref="ProbeCoatLogical[j]"/>
@@ -379,13 +448,15 @@
       <volume name="ReflectorLogical[j]">
         <materialref ref="Aluminium"/>
         <solidref ref="ReflectorOuterSurface-InnerSurfaceSolid[j]"/>
-        <auxiliary auxtype="Color" auxvalue="brown"/>
+        <auxiliary auxtype="Color" auxvalue="yellow"/>
       </volume>
+      <!-- For Light Guide, enable or disable detector sensitivity -->
       <volume name="LightGuideLogical[j]">
         <materialref ref="Aluminium"/>
         <solidref ref="LightGuideOuterSurface-InnerSurfaceSolid[j]"/>
         <auxiliary auxtype="Color" auxvalue="cyan"/>
-        <!--<auxiliary auxtype="SensDet" auxvalue="planeDet"/>-->
+        <auxiliary auxtype="Alpha" auxvalue="0.1"/>
+       <!-- <auxiliary auxtype="SensDet" auxvalue="planeDet"/> -->
       </volume>
       <volume name="EndcapLogical[j]">
         <materialref ref="Aluminium"/>
@@ -396,15 +467,15 @@
         <materialref ref="Quartz"/>
         <solidref ref="PhotonDetectorEntranceWindowSolid[j]"/>
         <auxiliary auxtype="Color" auxvalue="magenta"/>
-		<auxiliary auxtype="SensDet" auxvalue="planeDet"/>
       </volume>
       <volume name="PhotonDetectorLogical[j]">
         <materialref ref="Photocathode"/>
         <solidref ref="PhotonDetectorSolid[j]"/>
         <auxiliary auxtype="Color" auxvalue="red"/>
+		<auxiliary auxtype="SensDet" auxvalue="planeDet"/>
       </volume>
       <volume name="PhotonDetectorContainerLogical[j]">
-        <materialref ref="Air"/>
+        <materialref ref="Air_Optical"/>
         <solidref ref="PhotonDetectorContainerSolid[j]"/>
         <physvol name="PhotonDetectorEntranceWindowPhysical[j]">
           <volumeref ref="PhotonDetectorEntranceWindowLogical[j]"/>
@@ -417,7 +488,7 @@
         <auxiliary auxtype="Color" auxvalue="yellow"/>
       </volume>
       <volume name="ContainerLogical[j]">
-        <materialref ref="Air"/>
+        <materialref ref="Air_Optical"/>
         <solidref ref="ContainerSolid[j]"/>
         <physvol name="ProbeContainerPhysical[j]">
           <volumeref ref="ProbeContainerLogical[j]"/>
@@ -443,9 +514,17 @@
           <position name="PhotonDetectorContainerPhysical_pos[j]" unit="mm" x="0" y="Physical_y[j]-0.5*ReflectorLength-LightGuideLength[j]-0.5*PhotonDetectorContainerFullLength" z="Container_z[j]"/>
           <rotation name="PhotonDetectorContainerPhysical_rot[j]" unit="deg" x="-90" y="0" z="0"/>
         </physvol>
+        <auxiliary auxtype="Color" auxvalue="green"/>
         <auxiliary auxtype="Alpha" auxvalue="0.1"/>
         <auxiliary auxtype="Visibility" auxvalue="true"/>
       </volume>
+
+    <skinsurface name="ReflectorSurface[j]" surfaceproperty="GuideOpticalSurface">
+      <volumeref ref="ReflectorLogical[j]"/>
+    </skinsurface>
+      <skinsurface name="GuideSurface[j]" surfaceproperty="GuideOpticalSurface">
+        <volumeref ref="LightGuideLogical[j]"/>
+      </skinsurface>
     </loop>
     
     
@@ -711,5 +790,4 @@
   <setup name="Default" version="1.0">
     <world ref="mollerdetContainerLogical"/>
   </setup>
-
 </gdml>
