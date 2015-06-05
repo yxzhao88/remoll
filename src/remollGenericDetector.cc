@@ -1,4 +1,5 @@
 #include "remollGenericDetector.hh"
+#include "G4OpticalPhoton.hh"
 #include "G4SDManager.hh"
 
 remollGenericDetector::remollGenericDetector( G4String name, G4int detnum ) : G4VSensitiveDetector(name){
@@ -51,13 +52,26 @@ G4bool remollGenericDetector::ProcessHits( G4Step *step, G4TouchableHistory *){
     //DEBUG print
     //printf("[%i,%i] \n",copyID,fDetNo);
 
+	if (prestep->GetStepStatus() != fGeomBoundary) return false;
+
     // We're just going to record primary particles and things
     // that have just entered our boundary
     badhit = true;
     if( track->GetCreatorProcess() == 0 ||
 	    (prestep->GetStepStatus() == fGeomBoundary && fTrackSecondaries)
       ){
-	badhit = false;
+		  //We have to take an extra step with optical photons to make sure they get absorbed
+		  if(track->GetDefinition() == G4OpticalPhoton::Definition())
+		  {
+			  if(track->GetTrackStatus() == fStopAndKill)
+			  {
+			   badhit = false;
+		      }
+		  }
+		  else
+		  {
+			  badhit = false;
+		  }
     }
 
 
