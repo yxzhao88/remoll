@@ -278,6 +278,7 @@ G4VPhysicalVolume* remollDetectorConstruction::Construct() {
   daughterVisAtt->SetForceWireframe (true);
   for(int i=0;i<worldVolume->GetLogicalVolume()->GetNoDaughters();i++){
       worldVolume->GetLogicalVolume()->GetDaughter(i)->GetLogicalVolume()->SetVisAttributes(daughterVisAtt);
+    
   }
 
   //==========================
@@ -290,6 +291,9 @@ G4VPhysicalVolume* remollDetectorConstruction::Construct() {
   G4cout << G4endl << "Material table: " << G4endl << G4endl;
   G4cout << *(G4Material::GetMaterialTable()) << G4endl;
 
+  //following routine update the copy number as well as the proper settings for kryptonite volumes : Rakitha Tue Oct 14 11:17:10 EDT 2014
+  UpdateCopyNo(worldVolume,1); 
+
   G4cout << G4endl << "Geometry tree: " << G4endl << G4endl;
 
 
@@ -298,6 +302,32 @@ G4VPhysicalVolume* remollDetectorConstruction::Construct() {
   return worldVolume;
 }
 
+
+G4int remollDetectorConstruction::UpdateCopyNo(G4VPhysicalVolume* aVolume,G4int index){  
+ 
+    //if (aVolume->GetLogicalVolume()->GetNoDaughters()==0 ){
+    aVolume->SetCopyNo(index);
+    G4Material* material;
+    G4VisAttributes* kryptoVisAtt= new G4VisAttributes(G4Colour(0.7,0.0,0.0));
+    //set user limits for Kryptonite materials. When tracks are killed inside Kryptonite materials, energy will be properly deposited
+    material = aVolume->GetLogicalVolume()->GetMaterial();
+
+    if(  material->GetName()=="Tungsten" ){ // collimators are Tungsten
+	 // ||  material->GetName()=="Pb"
+	 // ||  material->GetName()=="Copper" ){
+        // G4UserLimits(G4double ustepMax = DBL_MAX, G4double utrakMax = DBL_MAX, G4double utimeMax = DBL_MAX, G4double uekinMin = 0., G4double urangMin = 0. );
+	aVolume->GetLogicalVolume()->SetUserLimits( new G4UserLimits(0.0, 0.0, 0.0, DBL_MAX, DBL_MAX) );
+	aVolume->GetLogicalVolume()->SetVisAttributes(kryptoVisAtt);
+    }
+    index++;
+    //}else {
+    for(int i=0;i<aVolume->GetLogicalVolume()->GetNoDaughters();i++){
+        index = UpdateCopyNo(aVolume->GetLogicalVolume()->GetDaughter(i),index);
+    }
+     //}
+ 
+   return index;
+ };
 
 void remollDetectorConstruction::CreateGlobalMagneticField() {
     fGlobalField = new remollGlobalField();

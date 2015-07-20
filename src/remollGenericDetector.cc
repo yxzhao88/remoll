@@ -49,18 +49,18 @@ G4bool remollGenericDetector::ProcessHits( G4Step *step, G4TouchableHistory *){
 
     G4double edep = step->GetTotalEnergyDeposit();
 
-    G4Material* material = track->GetMaterial();
-
-    // from remollSteppingAction.cc
-    // Add etot to edep before the track is killed
-    if( (   material->GetName()=="Tungsten" 
-        ||  material->GetName()=="Pb"
-	||  material->GetName()=="Copper" )
-	&& rStep->GetKryptoniteStatus() ){
-      edep += track->GetTotalEnergy();
-      //      fTrack->SetTrackStatus(fKillTrackAndSecondaries);
-    }
-
+    //    G4Material* material = track->GetMaterial();
+    //
+    // // from remollSteppingAction.cc
+    // // Add etot to edep before the track is killed
+    // if( (   material->GetName()=="Tungsten" 
+    //     ||  material->GetName()=="Pb"
+    // 	||  material->GetName()=="Copper" )
+    // 	&& rStep->GetKryptoniteStatus() ){
+    //   edep += track->GetTotalEnergy();
+    //   //      fTrack->SetTrackStatus(fKillTrackAndSecondaries);
+    // }
+    //
     //    G4cout << "remollGenericDetector edep:: "<< edep << "\t etot:: "<< track->GetTotalEnergy() << G4endl;
 
     // We're just going to record primary particles and things
@@ -96,11 +96,14 @@ G4bool remollGenericDetector::ProcessHits( G4Step *step, G4TouchableHistory *){
     }
     /////////////////////////////////////////////////////
 
-    // Do the actual data grabbing
+    // G4cout << "remollGenericDetector fDetNo:: "<< fDetNo << "\t copyID:: "<< copyID << G4endl;
+    // G4cout << "thishit->fTrID:: " << track->GetTrackID() << "\t thishit->fmTrID:: " << track->GetParentID() << "\t thishit->fPID:: " << track->GetDefinition()->GetPDGEncoding() << G4endl;
 
+    // Do the actual data grabbing
     if( !badedep ){
 	// This is all we need to do for the sum
 	thissum->fEdep += edep;
+	//	G4cout << "remollGenericDetector:: thissum->fEdep::" << thissum->fEdep<< G4endl;
     }
 
     if( !badhit ){
@@ -121,6 +124,8 @@ G4bool remollGenericDetector::ProcessHits( G4Step *step, G4TouchableHistory *){
 	thishit->fGen   = (long int) track->GetCreatorProcess();
 
 	thishit->fEdep = edep;
+
+	//	G4cout << "remollGenericDetector:: thishit->fEdep:: "<< thishit->fEdep << G4endl << G4endl;
     }
 
     return !badedep && !badhit;

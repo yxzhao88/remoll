@@ -16,7 +16,7 @@
 #/remoll/magcurrent map_directory/blockyHybrid_rm_3.0.txt 1000.0 A
 
 # Raster and initial angle stuff
-/remoll/oldras true
+/remoll/oldras false
 /remoll/rasx 5 mm
 /remoll/rasy 5 mm
 #/remoll/beam_x0 0 mm
@@ -30,8 +30,8 @@
 
 /remoll/beamene 11 GeV
 
-#/remoll/gen beam
-/remoll/gen moller
+/remoll/gen beam
+#/remoll/gen moller
 #/remoll/thcommin 30.0 deg
 #/remoll/thcommax 150.0 deg
 #/remoll/gen elastic 
@@ -60,6 +60,6 @@
 
 /remoll/filename remollout.root
 
-#/tracking/verbose 2
+#/tracking/verbose 1
 
-/run/beamOn 100
+/run/beamOn 2000
